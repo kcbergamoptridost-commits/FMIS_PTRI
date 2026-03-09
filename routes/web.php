@@ -2,27 +2,39 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BudgetController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
-use App\Models\Budget;
 use App\Http\Controllers\ProposalController;
+use Illuminate\Support\Facades\Route;
+use App\Models\Budget;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::middleware(['auth'])->group(function () {
 
-    $totalBudget = \App\Models\Budget::sum('ps')
-        + \App\Models\Budget::sum('mooe')
-        + \App\Models\Budget::sum('co');
+    // Dashboard
+    Route::get('/dashboard', function () {
 
-    return view('dashboard', compact('totalBudget'));
+        $totalPS = Budget::sum('ps');
+        $totalMOOE = Budget::sum('mooe');
+        $totalCO = Budget::sum('co');
 
-})->middleware(['auth'])->name('dashboard');
+        $totalBudget = $totalPS + $totalMOOE + $totalCO;
+        $totalAppropriation = $totalBudget;
 
-    // Allocation routes
+        return view('dashboard', compact(
+            'totalPS',
+            'totalMOOE',
+            'totalCO',
+            'totalBudget',
+            'totalAppropriation'
+        ));
+
+    })->name('dashboard');
+
+
+    // Budget allocation
     Route::get('budgets/{budget}/allocate',
         [BudgetController::class, 'allocateForm']
     )->name('budgets.allocate');
@@ -31,30 +43,30 @@ Route::get('/dashboard', function () {
         [BudgetController::class, 'allocateStore']
     )->name('budgets.allocations.store');
 
+
     // Budget resource
     Route::resource('budgets', BudgetController::class);
+
 
     // Department resource
     Route::resource('departments', DepartmentController::class);
 
-    // Profile routes
+
+    // Proposals
+    Route::get('/proposals', [ProposalController::class, 'index'])
+        ->name('proposals.index');
 
 
-Route::middleware('auth')->group(function () {
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
 });
-
-Route::middleware(['auth'])->group(function () {
-
-    Route::get('/proposals', [ProposalController::class, 'index'])->name('proposals.index');
-
-});
-
 
 require __DIR__.'/auth.php';

@@ -7,6 +7,7 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -93,14 +94,25 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
+    <label class="form-label">Password</label>
+    <div class="input-group">
+        <input type="password" name="password" id="password" class="form-control" required>
+        <span class="input-group-text" onclick="togglePassword('password','icon1')" style="cursor:pointer;">
+            <i id="icon1" class="bi bi-eye"></i>
+        </span>
+    </div>
+</div>
 
-            <div class="mb-3">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" name="password_confirmation" class="form-control" required>
-            </div>
+<div class="mb-3">
+    <label class="form-label">Confirm Password</label>
+    <div class="input-group">
+        <input type="password" name="password_confirmation" id="confirm_password" class="form-control" required>
+        <span class="input-group-text" onclick="togglePassword('confirm_password','icon2')" style="cursor:pointer;">
+            <i id="icon2" class="bi bi-eye"></i>
+        </span>
+    </div>
+</div>
+</div>
 
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">
@@ -121,4 +133,22 @@
 </div>
 
 </body>
+
+<script>
+function togglePassword(fieldId, iconId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+
+    if (field.type === "password") {
+        field.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    } else {
+        field.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    }
+}
+</script>
+
 </html>

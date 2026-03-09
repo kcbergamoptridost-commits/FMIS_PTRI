@@ -10,11 +10,17 @@ use Illuminate\Http\Request;
 class BudgetController extends Controller
 {
 
-    public function index()
-    {
-        $budgets = Budget::all();
-        return view('budgets.index', compact('budgets'));
-    }
+  public function index()
+{
+   $gms = Budget::where('program_name','GMS')->latest()->first();
+    $hrd = Budget::where('program_name','HRD')->latest()->first();
+    $rd  = Budget::where('program_name','RD')->latest()->first();
+    $st  = Budget::where('program_name','ST')->latest()->first();
+    $tt  = Budget::where('program_name','TT')->latest()->first();
+    
+    
+    return view('budgets.index', compact('gms','hrd','rd','st','tt'));
+}
 
     public function create()
     {
@@ -24,30 +30,42 @@ class BudgetController extends Controller
  public function store(Request $request)
 {
     Budget::create([
-        'gms_ps' => $request->gms_ps,
-        'gms_mooe' => $request->gms_mooe,
-        'gms_co' => $request->gms_co,
-
-        'hrd_ps' => $request->hrd_ps,
-        'hrd_mooe' => $request->hrd_mooe,
-        'hrd_co' => $request->hrd_co,
-
-        'rd_ps' => $request->rd_ps,
-        'rd_mooe' => $request->rd_mooe,
-        'rd_co' => $request->rd_co,
-
-        'st_ps' => $request->st_ps,
-        'st_mooe' => $request->st_mooe,
-        'st_co' => $request->st_co,
-
-        'tt_ps' => $request->tt_ps,
-        'tt_mooe' => $request->tt_mooe,
-        'tt_co' => $request->tt_co,
+        'program_name' => 'GMS',
+        'ps' => $request->gms_ps,
+        'mooe' => $request->gms_mooe,
+        'co' => $request->gms_co
     ]);
 
-    return redirect()->route('budgets.index')->with('success', 'Budget saved successfully.');
-}
+    Budget::create([
+        'program_name' => 'HRD',
+        'ps' => $request->hrd_ps,
+        'mooe' => $request->hrd_mooe,
+        'co' => $request->hrd_co
+    ]);
 
+    Budget::create([
+        'program_name' => 'RD',
+        'ps' => $request->rd_ps,
+        'mooe' => $request->rd_mooe,
+        'co' => $request->rd_co
+    ]);
+
+    Budget::create([
+        'program_name' => 'ST',
+        'ps' => $request->st_ps,
+        'mooe' => $request->st_mooe,
+        'co' => $request->st_co
+    ]);
+
+    Budget::create([
+        'program_name' => 'TT',
+        'ps' => $request->tt_ps,
+        'mooe' => $request->tt_mooe,
+        'co' => $request->tt_co
+    ]);
+
+    return redirect()->route('budgets.index')->with('success','Budget saved successfully.');
+}
    
 
 

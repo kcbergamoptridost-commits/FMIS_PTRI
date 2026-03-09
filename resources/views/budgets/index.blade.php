@@ -16,7 +16,7 @@
 </a>
 </div>
 
-@php
+<?php
 
 $gms_ps = $gms_mooe = $gms_co = 0;
 $hrd_ps = $hrd_mooe = $hrd_co = 0;
@@ -24,40 +24,6 @@ $hrd_ps = $hrd_mooe = $hrd_co = 0;
 $rd_ps = $rd_mooe = $rd_co = 0;
 $st_ps = $st_mooe = $st_co = 0;
 $tt_ps = $tt_mooe = $tt_co = 0;
-
-foreach($budgets as $b){
-
-    if($b->program == "General Management and Supervision"){
-        if($b->expense_class == "PS") $gms_ps += $b->total_amount;
-        if($b->expense_class == "MOOE") $gms_mooe += $b->total_amount;
-        if($b->expense_class == "CO") $gms_co += $b->total_amount;
-    }
-
-    if($b->program == "Human Resource Development"){
-        if($b->expense_class == "PS") $hrd_ps += $b->total_amount;
-        if($b->expense_class == "MOOE") $hrd_mooe += $b->total_amount;
-        if($b->expense_class == "CO") $hrd_co += $b->total_amount;
-    }
-
-    if($b->program == "Textile R&D Program"){
-        if($b->expense_class == "PS") $rd_ps += $b->total_amount;
-        if($b->expense_class == "MOOE") $rd_mooe += $b->total_amount;
-        if($b->expense_class == "CO") $rd_co += $b->total_amount;
-    }
-
-    if($b->program == "Textile S&T Services Program"){
-        if($b->expense_class == "PS") $st_ps += $b->total_amount;
-        if($b->expense_class == "MOOE") $st_mooe += $b->total_amount;
-        if($b->expense_class == "CO") $st_co += $b->total_amount;
-    }
-
-    if($b->program == "Textile Technology Transfer Program"){
-        if($b->expense_class == "PS") $tt_ps += $b->total_amount;
-        if($b->expense_class == "MOOE") $tt_mooe += $b->total_amount;
-        if($b->expense_class == "CO") $tt_co += $b->total_amount;
-    }
-
-}
 
 $gms_total = $gms_ps + $gms_mooe + $gms_co;
 $hrd_total = $hrd_ps + $hrd_mooe + $hrd_co;
@@ -82,7 +48,7 @@ $total_co = $gas_co + $ops_co;
 
 $grand_total = $total_ps + $total_mooe + $total_co;
 
-@endphp
+?>
 
 <div class="card shadow">
 <div class="card-body">
@@ -107,26 +73,33 @@ $grand_total = $total_ps + $total_mooe + $total_co;
 
 <tr>
 <td>General Management and Supervision</td>
-<td>₱ {{ number_format($gms_ps,2) }}</td>
-<td>₱ {{ number_format($gms_mooe,2) }}</td>
-<td>₱ {{ number_format($gms_co,2) }}</td>
-<td>₱ {{ number_format($gms_total,2) }}</td>
+<td>₱ {{ number_format($gms->ps ?? 0,2) }}</td>
+<td>₱ {{ number_format($gms->mooe ?? 0,2) }}</td>
+<td>₱ {{ number_format($gms->co ?? 0,2) }}</td>
+<td>₱ {{ number_format(($gms->ps ?? 0)+($gms->mooe ?? 0)+($gms->co ?? 0),2) }}</td>
 </tr>
 
 <tr>
 <td>Human Resource Development</td>
-<td>₱ {{ number_format($hrd_ps,2) }}</td>
-<td>₱ {{ number_format($hrd_mooe,2) }}</td>
-<td>₱ {{ number_format($hrd_co,2) }}</td>
-<td>₱ {{ number_format($hrd_total,2) }}</td>
+<td>₱ {{ number_format($hrd->ps ?? 0,2) }}</td>
+<td>₱ {{ number_format($hrd->mooe ?? 0,2) }}</td>
+<td>₱ {{ number_format($hrd->co ?? 0,2) }}</td>
+<td>₱ {{ number_format(($hrd->ps ?? 0)+($hrd->mooe ?? 0)+($hrd->co ?? 0),2) }}</td>
 </tr>
+
+@php
+$gas_ps = ($gms->ps ?? 0) + ($hrd->ps ?? 0);
+$gas_mooe = ($gms->mooe ?? 0) + ($hrd->mooe ?? 0);
+$gas_co = ($gms->co ?? 0) + ($hrd->co ?? 0);
+$gas_total = $gas_ps + $gas_mooe + $gas_co;
+@endphp
 
 <tr style="font-weight:bold; background:#f5f5f5;">
 <td>Sub Total - General Administration and Support</td>
-<td>₱ {{ number_format($gas_ps,2) }}</td>
-<td>₱ {{ number_format($gas_mooe,2) }}</td>
-<td>₱ {{ number_format($gas_co,2) }}</td>
-<td>₱ {{ number_format($gas_total,2) }}</td>
+<td><strong>₱ {{ number_format($gas_ps,2) }}</strong></td>
+<td><strong>₱ {{ number_format($gas_mooe,2) }}</strong></td>
+<td><strong>₱ {{ number_format($gas_co,2) }}</strong></td>
+<td><strong>₱ {{ number_format($gas_total,2) }}</strong></td>
 </tr>
 
 <tr class="table-secondary">
@@ -135,42 +108,56 @@ $grand_total = $total_ps + $total_mooe + $total_co;
 
 <tr>
 <td>Textile R&D Program</td>
-<td>₱ {{ number_format($rd_ps,2) }}</td>
-<td>₱ {{ number_format($rd_mooe,2) }}</td>
-<td>₱ {{ number_format($rd_co,2) }}</td>
-<td>₱ {{ number_format($rd_total,2) }}</td>
+<td>₱ {{ number_format($rd->ps ?? 0,2) }}</td>
+<td>₱ {{ number_format($rd->mooe ?? 0,2) }}</td>
+<td>₱ {{ number_format($rd->co ?? 0,2) }}</td>
+<td>₱ {{ number_format(($rd->ps ?? 0)+($rd->mooe ?? 0)+($rd->co ?? 0),2) }}</td>
 </tr>
 
 <tr>
 <td>Textile S&T Services Program</td>
-<td>₱ {{ number_format($st_ps,2) }}</td>
-<td>₱ {{ number_format($st_mooe,2) }}</td>
-<td>₱ {{ number_format($st_co,2) }}</td>
-<td>₱ {{ number_format($st_total,2) }}</td>
+<td>₱ {{ number_format($st->ps ?? 0,2) }}</td>
+<td>₱ {{ number_format($st->mooe ?? 0,2) }}</td>
+<td>₱ {{ number_format($st->co ?? 0,2) }}</td>
+<td>₱ {{ number_format(($st->ps ?? 0)+($st->mooe ?? 0)+($st->co ?? 0),2) }}</td>
 </tr>
 
 <tr>
 <td>Textile Technology Transfer Program</td>
-<td>₱ {{ number_format($tt_ps,2) }}</td>
-<td>₱ {{ number_format($tt_mooe,2) }}</td>
-<td>₱ {{ number_format($tt_co,2) }}</td>
-<td>₱ {{ number_format($tt_total,2) }}</td>
+<td>₱ {{ number_format($tt->ps ?? 0,2) }}</td>
+<td>₱ {{ number_format($tt->mooe ?? 0,2) }}</td>
+<td>₱ {{ number_format($tt->co ?? 0,2) }}</td>
+<td>₱ {{ number_format(($tt->ps ?? 0)+($tt->mooe ?? 0)+($tt->co ?? 0),2) }}</td>
 </tr>
+
+@php
+$ops_ps = ($rd->ps ?? 0) + ($st->ps ?? 0) + ($tt->ps ?? 0);
+$ops_mooe = ($rd->mooe ?? 0) + ($st->mooe ?? 0) + ($tt->mooe ?? 0);
+$ops_co = ($rd->co ?? 0) + ($st->co ?? 0) + ($tt->co ?? 0);
+$ops_total = $ops_ps + $ops_mooe + $ops_co;
+@endphp
 
 <tr style="font-weight:bold; background:#f5f5f5;">
 <td>Sub Total - Operations</td>
-<td>₱ {{ number_format($ops_ps,2) }}</td>
-<td>₱ {{ number_format($ops_mooe,2) }}</td>
-<td>₱ {{ number_format($ops_co,2) }}</td>
-<td>₱ {{ number_format($ops_total,2) }}</td>
+<td><strong>₱ {{ number_format($ops_ps,2) }}</strong></td>
+<td><strong>₱ {{ number_format($ops_mooe,2) }}</strong></td>
+<td><strong>₱ {{ number_format($ops_co,2) }}</strong></td>
+<td><strong>₱ {{ number_format($ops_total,2) }}</strong></td>
 </tr>
+
+@php
+$grand_ps = $gas_ps + $ops_ps;
+$grand_mooe = $gas_mooe + $ops_mooe;
+$grand_co = $gas_co + $ops_co;
+$grand_total = $grand_ps + $grand_mooe + $grand_co;
+@endphp
 
 <tr style="font-weight:bold; background:#eaeaea;">
 <td>TOTAL</td>
-<td>₱ {{ number_format($total_ps,2) }}</td>
-<td>₱ {{ number_format($total_mooe,2) }}</td>
-<td>₱ {{ number_format($total_co,2) }}</td>
-<td>₱ {{ number_format($grand_total,2) }}</td>
+<td><strong>₱ {{ number_format($grand_ps,2) }}</strong></td>
+<td><strong>₱ {{ number_format($grand_mooe,2) }}</strong></td>
+<td><strong>₱ {{ number_format($grand_co,2) }}</strong></td>
+<td><strong>₱ {{ number_format($grand_total,2) }}</strong></td>
 </tr>
 
 </tbody>

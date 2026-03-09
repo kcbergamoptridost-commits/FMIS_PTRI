@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<a href="{{ route('dashboard') }}" class="btn btn-light mb-3">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+</a>
 <div class="container">
     <h3 class="mb-4">Create Budget - Regular Programs</h3>
 
@@ -90,13 +93,13 @@
 <td id="ops_total">0</td>
 </tr>
 
-<tr class="table-light">
+<!-- <tr class="table-light">
 <td><strong>Sub Total - Operations</strong></td>
 <td id="ops_ps"></td>
 <td id="ops_mooe"></td>
 <td id="ops_co"></td>
 <td id="ops_total"></td>
-</tr>
+</tr> -->
 
 <tr class="table-dark">
 <td><strong>TOTAL REGULAR PROGRAMS</strong></td>
@@ -132,10 +135,13 @@ document.querySelectorAll('.calc').forEach(input => {
 
 function calculateTotals(){
 
-    let rows = document.querySelectorAll('tbody tr');
+    let gas_ps = 0, gas_mooe = 0, gas_co = 0;
+    let ops_ps = 0, ops_mooe = 0, ops_co = 0;
 
-    rows.forEach(row => {
+    document.querySelectorAll('tbody tr').forEach(row => {
+
         let inputs = row.querySelectorAll('.calc');
+
         if(inputs.length === 3){
 
             let ps = parseFloat(inputs[0].value) || 0;
@@ -145,8 +151,43 @@ function calculateTotals(){
             let total = ps + mooe + co;
 
             row.querySelector('.total').value = total.toFixed(2);
+
+            if(row.innerText.includes("General") || row.innerText.includes("Human")){
+                gas_ps += ps;
+                gas_mooe += mooe;
+                gas_co += co;
+            }else{
+                ops_ps += ps;
+                ops_mooe += mooe;
+                ops_co += co;
+            }
+
         }
+
     });
+
+    let gas_total = gas_ps + gas_mooe + gas_co;
+    let ops_total = ops_ps + ops_mooe + ops_co;
+
+    document.getElementById('gas_ps').innerText = gas_ps.toFixed(2);
+    document.getElementById('gas_mooe').innerText = gas_mooe.toFixed(2);
+    document.getElementById('gas_co').innerText = gas_co.toFixed(2);
+    document.getElementById('gas_total').innerText = gas_total.toFixed(2);
+
+    document.getElementById('ops_ps').innerText = ops_ps.toFixed(2);
+    document.getElementById('ops_mooe').innerText = ops_mooe.toFixed(2);
+    document.getElementById('ops_co').innerText = ops_co.toFixed(2);
+    document.getElementById('ops_total').innerText = ops_total.toFixed(2);
+
+    let total_ps = gas_ps + ops_ps;
+    let total_mooe = gas_mooe + ops_mooe;
+    let total_co = gas_co + ops_co;
+    let grand_total = total_ps + total_mooe + total_co;
+
+    document.getElementById('total_ps').innerText = total_ps.toFixed(2);
+    document.getElementById('total_mooe').innerText = total_mooe.toFixed(2);
+    document.getElementById('total_co').innerText = total_co.toFixed(2);
+    document.getElementById('grand_total').innerText = grand_total.toFixed(2);
 
 }
 

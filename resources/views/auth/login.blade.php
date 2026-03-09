@@ -7,6 +7,7 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -59,10 +60,21 @@
                 <input type="text" name="employee_id" class="form-control" required>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
+           <div class="mb-3">
+    <label class="form-label">Password</label>
+
+    <div class="input-group">
+        <input type="password" 
+               name="password" 
+               id="password"
+               class="form-control" 
+               required>
+
+        <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
+            <i class="bi bi-eye" id="toggleIcon"></i>
+        </span>
+    </div>
+</div>
 <div class="mb-3 form-check">
     <input type="checkbox" 
            class="form-check-input" 
@@ -89,4 +101,23 @@
 </div>
 
 </body>
+
+<script>
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    }
+
+}
+</script>
 </html>
