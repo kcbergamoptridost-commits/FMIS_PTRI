@@ -89,12 +89,6 @@
                     Login
                 </button>
             </div>
-<div class="text-center mt-3">
-    <span>Don't have an account?</span>
-    <a href="{{ route('register') }}" class="text-decoration-none fw-semibold">
-        Create Account
-    </a>
-</div>
         </form>
 
     </div>
