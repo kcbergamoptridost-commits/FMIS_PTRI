@@ -4,12 +4,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Budget;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATED USERS (Admin + Staff)
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth'])->group(function () {
 
@@ -34,29 +42,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
 
-    // Budget allocation
-    Route::get('budgets/{budget}/allocate',
-        [BudgetController::class, 'allocateForm']
-    )->name('budgets.allocate');
-
-    Route::post('budgets/{budget}/allocate',
-        [BudgetController::class, 'allocateStore']
-    )->name('budgets.allocations.store');
-
-
-    // Budget resource
-    Route::resource('budgets', BudgetController::class);
-
-
-    // Department resource
-    Route::resource('departments', DepartmentController::class);
-
-
-    // Proposals
-    Route::get('/proposals', [ProposalController::class, 'index'])
-        ->name('proposals.index');
-
-
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -68,5 +53,38 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.destroy');
 
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ONLY MODULES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth','admin'])->group(function () {
+
+    // Budget management
+    Route::get('budgets/{budget}/allocate',
+        [BudgetController::class, 'allocateForm']
+    )->name('budgets.allocate');
+
+    Route::post('budgets/{budget}/allocate',
+        [BudgetController::class, 'allocateStore']
+    )->name('budgets.allocations.store');
+
+    Route::resource('budgets', BudgetController::class);
+
+    // Departments
+    Route::resource('departments', DepartmentController::class);
+
+    // Proposals
+    Route::get('/proposals', [ProposalController::class, 'index'])
+        ->name('proposals.index');
+
+    // User Management (Admin creates staff accounts)
+    Route::resource('users', UserController::class);
+
+});
+
 
 require __DIR__.'/auth.php';

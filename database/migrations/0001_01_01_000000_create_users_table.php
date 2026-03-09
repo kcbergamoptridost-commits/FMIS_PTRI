@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('employee_id')->unique();
             $table->string('name');
             $table->string('department');
-            $table->string('role')->default('staff'); // admin, accountant, staff
+            $table->string('role')->default('admin');
             $table->string('email')->nullable(); // optional now
             $table->string('password');
             $table->rememberToken();

@@ -70,10 +70,11 @@
     </a>
 
     <!-- User Management -->
-    <a href="#"
-       class="sidebar-link d-flex align-items-center mb-2">
-        <i class="bi bi-people me-2"></i> User Management
-    </a>
+     
+   <a href="{{ route('users.index') }}"
+   class="sidebar-link d-flex align-items-center mb-2">
+    <i class="bi bi-people me-2"></i> User Management
+</a>
 
     <!-- Reports -->
     <a href="#"
