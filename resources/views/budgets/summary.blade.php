@@ -6,6 +6,53 @@
 
 <h2 class="mb-4">Budget Summary</h2>
 
+
+
+
+<!-- Budget Dashboard Cards -->
+<div class="row mb-4">
+
+    <!-- Total Budget (Admin Input) -->
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Total Budget</h5>
+                <h2 class="text-primary">
+                    ₱ {{ number_format($totalBudgetInput,2) }}
+                </h2>
+                <small class="text-muted">Set by Administrator</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regular Programs Total -->
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Total Regular Programs</h5>
+                <h2 class="text-success">
+                    ₱ {{ number_format($totalPrograms,2) }}
+                </h2>
+                <small class="text-muted">PS + MOOE + CO</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining Balance -->
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Remaining Budget</h5>
+                <h2 class="text-danger">
+                    ₱ {{ number_format($remainingBudget,2) }}
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 <table class="table table-bordered">
 
 <thead>

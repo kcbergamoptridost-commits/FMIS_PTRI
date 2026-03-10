@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-```
+
 <h3 class="mb-4 fw-bold">Create Staff Account</h3>
 
 <div class="card shadow-sm border-0">
@@ -23,19 +23,28 @@
                 <input type="text" name="name" class="form-control" required>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Department</label>
-                <input type="text" name="department" class="form-control" required>
-            </div>
+        <div class="mb-3">
+        <label class="form-label">Department</label>
+
+        <select name="department" class="form-select" required>
+            <option value="">Select Department</option>
+            <option value="PICTS">Planning and ICT Staff (PICTS)</option>
+            <option value="TIPS">Technology Transfer, Information and Promotion Staff (TIPS)</option>
+            <option value="RRD">Research and Development Staff (RRD)</option>
+            <option value="TSD">Technical Services Division (TSD)</option>
+            <option value="FAD">Finance and Administrative Staff (FAD)</option>
+        </select>
+    </div>
 
             <div class="mb-3">
-                <label class="form-label">Role</label>
-                <select name="role" class="form-control" required>
-                    <option value="">Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="staff">Staff</option>
-                </select>
-            </div>
+        <label class="form-label">Select Role</label>
+
+        <select name="department" class="form-select" required>
+            <option value="staff">Staff</option>
+            <option value="admin">Admin</option>
+        </select>
+    </div>
+
 
             <div class="mb-3">
                 <label class="form-label">Email Address</label>
@@ -58,10 +67,10 @@
         </span>
 
     </div>
-</div>
+</div>sssss
 
             <button type="submit" class="btn btn-primary">
-                Create Staff Account
+                Register Account
             </button>
 
             <a href="{{ route('users.index') }}" class="btn btn-secondary">
@@ -72,7 +81,7 @@
 
     </div>
 </div>
-```
+
 
 </div>
 

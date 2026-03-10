@@ -6,26 +6,44 @@ use App\Models\Budget;
 use App\Models\Department;
 use App\Models\BudgetDepartmentAllocation;
 use Illuminate\Http\Request;
-
+use App\Models\BudgetLimit;
 class BudgetController extends Controller
 {
 
-  public function index()
+ public function index()
 {
-   $gms = Budget::where('program_name','GMS')->latest()->first();
+    $gms = Budget::where('program_name','GMS')->latest()->first();
     $hrd = Budget::where('program_name','HRD')->latest()->first();
     $rd  = Budget::where('program_name','RD')->latest()->first();
     $st  = Budget::where('program_name','ST')->latest()->first();
     $tt  = Budget::where('program_name','TT')->latest()->first();
-    
-    
-    return view('budgets.index', compact('gms','hrd','rd','st','tt'));
+
+    // Compute totals from all budget records
+    $totalPS = Budget::sum('ps');
+    $totalMOOE = Budget::sum('mooe');
+    $totalCO = Budget::sum('co');
+
+    $totalPrograms = $totalPS + $totalMOOE + $totalCO;
+
+    // Get admin input budget
+    $budgetLimit = BudgetLimit::latest()->first();
+    $totalBudgetInput = $budgetLimit ? $budgetLimit->total_budget : 0;
+
+    // Remaining balance
+    $remainingBudget = $totalBudgetInput - $totalPrograms;
+
+    return view('budgets.index', compact(
+        'gms','hrd','rd','st','tt',
+        'totalBudgetInput',
+        'totalPrograms',
+        'remainingBudget'
+    ));
 }
 
-    public function create()
-    {
-        return view('budgets.create');
-    }
+public function create()
+{
+    return view('budgets.create');
+}
 
  public function store(Request $request)
 {
@@ -160,7 +178,7 @@ class BudgetController extends Controller
             ->with('success', 'Budget deleted.');
     }
 
- public function summary()
+public function summary()
 {
     $gms = Budget::where('program_name','GMS')->latest()->first();
     $hrd = Budget::where('program_name','HRD')->latest()->first();
@@ -168,22 +186,38 @@ class BudgetController extends Controller
     $st  = Budget::where('program_name','ST')->latest()->first();
     $tt  = Budget::where('program_name','TT')->latest()->first();
 
+    // Compute totals
     $totalPS = Budget::sum('ps');
     $totalMOOE = Budget::sum('mooe');
     $totalCO = Budget::sum('co');
 
-    $totalBudget = $totalPS + $totalMOOE + $totalCO;
+    $totalPrograms = $totalPS + $totalMOOE + $totalCO;
+
+    $totalBudgetInput = BudgetLimit::latest()->value('total_budget') ?? 0;
+
+    $remainingBudget = $totalBudgetInput - $totalPrograms;
 
     return view('budgets.summary', compact(
-        'gms',
-        'hrd',
-        'rd',
-        'st',
-        'tt',
-        'totalPS',
-        'totalMOOE',
-        'totalCO',
-        'totalBudget'
+        'gms','hrd','rd','st','tt',
+        'totalPrograms',
+        'totalBudgetInput',
+        'remainingBudget'
     ));
+}
+
+public function setBudget()
+{
+    return view('budgets.set-budget');
+}
+
+public function storeBudget(Request $request)
+{
+    BudgetLimit::create([
+        'fiscal_year' => $request->fiscal_year,
+        'total_budget' => $request->total_budget
+    ]);
+
+    return redirect()->route('budgets.index')
+           ->with('success','Total budget saved.');
 }
 }

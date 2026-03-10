@@ -124,5 +124,14 @@ Route::middleware(['auth','admin'])->group(function () {
 
 });
 
+Route::get('/set-budget',[BudgetController::class,'setBudget'])
+    ->name('budget.limit');
+
+Route::post('/set-budget',[BudgetController::class,'storeBudget'])
+    ->name('budget.limit.store');
+
+Route::get('/set-budget', [BudgetController::class, 'setBudget'])->name('setBudget');
+
+Route::post('/set-budget', [BudgetController::class, 'storeBudget'])->name('storeBudget');
 
 require __DIR__.'/auth.php';

@@ -4,6 +4,11 @@
 
 <h3 class="mb-4">Budget Summary</h3>
 
+
+<a href="{{ route('setBudget') }}" class="btn btn-success">
+    Set Total Budget
+</a>
+
 @if(session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
@@ -64,6 +69,46 @@ $grand_total = $total_ps + $total_mooe + $total_co;
 <th>Total</th>
 </tr>
 </thead>
+
+<div class="row mb-4">
+
+    <!-- Total Budget -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-muted">Total Budget (Admin Input)</h6>
+                <h3 class="fw-bold text-primary">
+                    ₱ {{ number_format($totalBudgetInput ?? 0,2) }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Programs -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-muted">Total Regular Programs</h6>
+                <h3 class="fw-bold text-success">
+                    ₱ {{ number_format($totalPrograms ?? 0,2) }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-muted">Remaining Budget</h6>
+                <h3 class="fw-bold text-danger">
+                    ₱ {{ number_format($remainingBudget ?? 0,2) }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <tbody>
 
@@ -166,5 +211,6 @@ $grand_total = $grand_ps + $grand_mooe + $grand_co;
 
 </div>
 </div>
+
 
 @endsection
