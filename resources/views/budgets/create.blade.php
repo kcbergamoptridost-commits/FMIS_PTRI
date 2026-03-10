@@ -12,7 +12,7 @@
 
 <div class="mb-3">
     <label class="form-label">Fiscal Year</label>
-    <input type="number" name="fiscal_year" class="form-control" required>
+    <input type="text" name="fiscal_year" class="form-control" maxlength="4" placeholder="Enter fiscal year (e.g. 2026)" required>
 </div>
 
 <table class="table table-bordered">

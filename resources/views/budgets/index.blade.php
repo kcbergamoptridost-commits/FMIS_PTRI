@@ -5,9 +5,12 @@
 <h3 class="mb-4">Budget Summary</h3>
 
 
-<a href="{{ route('setBudget') }}" class="btn btn-success">
-    Set Total Budget
-</a>
+<div class="d-flex gap-2 mb-3">
+
+    <a href="{{ route('setBudget') }}" class="btn btn-success">
+        Set Total Budget
+    </a>
+
 
 @if(session('success'))
 <div class="alert alert-success">
@@ -15,10 +18,10 @@
 </div>
 @endif
 
-<div class="mb-3">
-<a href="{{ route('budgets.create') }}" class="btn btn-primary">
-+ Create Budget
-</a>
+ <a href="{{ route('budgets.create') }}" class="btn btn-primary">
+        + Create Budget
+    </a>
+
 </div>
 
 <?php
