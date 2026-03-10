@@ -52,8 +52,46 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+        Route::middleware(['auth'])->group(function () {
+
+    Route::get('/budget-summary', [BudgetController::class, 'summary'])
+        ->name('budget.summary');
+
 });
 
+});
+
+/*
+|--------------------------------------------------------------------------
+| STAFF MODULES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+
+        $totalPS = Budget::sum('ps');
+        $totalMOOE = Budget::sum('mooe');
+        $totalCO = Budget::sum('co');
+
+        $totalBudget = $totalPS + $totalMOOE + $totalCO;
+        $totalAppropriation = $totalBudget;
+
+        return view('dashboard', compact(
+            'totalPS',
+            'totalMOOE',
+            'totalCO',
+            'totalBudget',
+            'totalAppropriation'
+        ));
+
+    })->name('dashboard');
+
+    Route::get('/budget-summary', [BudgetController::class, 'summary'])
+        ->name('budget.summary');
+
+});
 
 /*
 |--------------------------------------------------------------------------

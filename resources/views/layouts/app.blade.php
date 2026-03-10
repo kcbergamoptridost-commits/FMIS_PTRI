@@ -31,11 +31,15 @@
         <!-- Sidebar Menu -->
 <div class="px-3 pt-3">
 
-    <!-- Dashboard -->
+    <!-- Dashboard (ALL USERS) -->
     <a href="{{ route('dashboard') }}"
        class="sidebar-link d-flex align-items-center mb-2">
         <i class="bi bi-speedometer2 me-2"></i> Dashboard
     </a>
+
+
+    {{-- ADMIN ONLY --}}
+    @if(Auth::user()->role == 'admin')
 
     <!-- Budget -->
     <a class="sidebar-link d-flex align-items-center mb-2"
@@ -45,7 +49,6 @@
         <i class="bi bi-chevron-down ms-auto"></i>
     </a>
 
-    <!-- Budget Submenu -->
     <div class="collapse ps-4" id="budgetMenu">
 
         <a href="{{ route('budgets.create') }}"
@@ -57,30 +60,45 @@
            class="sidebar-link d-flex align-items-center mb-2">
             • Projects
         </a>
-            <a href="{{ route('budgets.index') }}"
-              class="sidebar-link d-flex align-items-center mb-2">
+
+        <a href="{{ route('budgets.index') }}"
+           class="sidebar-link d-flex align-items-center mb-2">
             • Budget Summary
         </a>
+
     </div>
 
-    <!-- Proposal Module -->
+    <!-- Proposal -->
     <a href="{{ route('proposals.index') }}"
        class="sidebar-link d-flex align-items-center mb-2">
         <i class="bi bi-file-earmark-text me-2"></i> Proposal Module
     </a>
 
     <!-- User Management -->
-     
-   <a href="{{ route('users.index') }}"
-   class="sidebar-link d-flex align-items-center mb-2">
-    <i class="bi bi-people me-2"></i> User Management
-</a>
+    <a href="{{ route('users.index') }}"
+       class="sidebar-link d-flex align-items-center mb-2">
+        <i class="bi bi-people me-2"></i> User Management
+    </a>
 
     <!-- Reports -->
     <a href="#"
        class="sidebar-link d-flex align-items-center mb-2">
         <i class="bi bi-bar-chart-line me-2"></i> Reports
     </a>
+
+    @endif
+
+
+
+    {{-- STAFF ONLY --}}
+    @if(Auth::user()->role == 'staff')
+
+    <a href="{{ route('budget.summary') }}"
+       class="sidebar-link d-flex align-items-center mb-2">
+        <i class="bi bi-cash-stack me-2"></i> Budget Summary
+    </a>
+
+    @endif
 
 </div>
 

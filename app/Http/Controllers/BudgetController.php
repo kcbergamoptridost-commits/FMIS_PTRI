@@ -159,4 +159,31 @@ class BudgetController extends Controller
         return redirect()->route('budgets.index')
             ->with('success', 'Budget deleted.');
     }
+
+ public function summary()
+{
+    $gms = Budget::where('program_name','GMS')->latest()->first();
+    $hrd = Budget::where('program_name','HRD')->latest()->first();
+    $rd  = Budget::where('program_name','RD')->latest()->first();
+    $st  = Budget::where('program_name','ST')->latest()->first();
+    $tt  = Budget::where('program_name','TT')->latest()->first();
+
+    $totalPS = Budget::sum('ps');
+    $totalMOOE = Budget::sum('mooe');
+    $totalCO = Budget::sum('co');
+
+    $totalBudget = $totalPS + $totalMOOE + $totalCO;
+
+    return view('budgets.summary', compact(
+        'gms',
+        'hrd',
+        'rd',
+        'st',
+        'tt',
+        'totalPS',
+        'totalMOOE',
+        'totalCO',
+        'totalBudget'
+    ));
+}
 }
